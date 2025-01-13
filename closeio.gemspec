@@ -1,12 +1,11 @@
 $:.push File.expand_path('../lib', __FILE__)
 require 'closeio/version'
-require 'base64'
 
 Gem::Specification.new do |s|
   s.name          = 'closeio'
   s.version       = Closeio::VERSION
   s.authors       = ['Taylor Brooks']
-  s.email         = ['dGJyb29rc0BnbWFpbC5jb20='].map { |e| Base64.decode64(e) }
+  s.email         = ['tbrooks@gmail.com']
   s.homepage      = 'https://github.com/taylorbrooks/closeio'
   s.summary       = 'A Ruby wrapper for the Close API'
   s.description   = 'A Ruby wrapper for the Close API -- a sales CRM built by salespeople, for salespeople.'
