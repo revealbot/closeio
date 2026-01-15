@@ -1,5 +1,4 @@
 require 'faraday'
-require 'faraday_middleware'
 require_relative 'error'
 require_relative 'version'
 
@@ -10,8 +9,11 @@ module Closeio
     include Closeio::Client::Activity
     include Closeio::Client::BulkAction
     include Closeio::Client::Contact
+    include Closeio::Client::CustomActivity
+    include Closeio::Client::CustomActivityType
     include Closeio::Client::CustomField
     include Closeio::Client::EmailAccount
+    include Closeio::Client::EmailActivity
     include Closeio::Client::EmailTemplate
     include Closeio::Client::Event
     include Closeio::Client::IntegrationLink
@@ -28,6 +30,7 @@ module Closeio
     include Closeio::Client::Task
     include Closeio::Client::User
     include Closeio::Client::Webhook
+    include Closeio::Client::Filter
 
     attr_reader :api_key, :logger, :ca_file, :errors, :utc_offset
 
@@ -94,12 +97,12 @@ module Closeio
         },
         ssl: { ca_file: ca_file }
       ) do |conn|
-        conn.request    :basic_auth, api_key, ''
-        conn.request    :json
-        conn.response   :logger if logger
-        conn.response   :json
-        conn.use        FaradayMiddleware::CloseioErrorHandler if errors
-        conn.adapter    Faraday.default_adapter
+        conn.request  :authorization, :basic, api_key, ''
+        conn.request  :json
+        conn.response :logger if logger
+        conn.response :json
+        conn.use      FaradayMiddleware::CloseioErrorHandler if errors
+        conn.adapter  Faraday.default_adapter
       end
     end
   end
